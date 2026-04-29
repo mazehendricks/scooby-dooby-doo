@@ -50,54 +50,160 @@ News sentiment filtering to guard against financial deepfakes and AI-driven misi
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- No server or installation required - runs entirely in the browser
+- **Python 3.8+** (for Robinhood API backend)
+- **Modern web browser** (Chrome, Firefox, Safari, Edge)
+- **Robinhood account** with API access
+- **pip** (Python package manager)
 
 ### Installation
 
-1. Clone the repository:
+#### Automated Setup (Recommended)
+
+**On Linux/macOS:**
+```bash
+git clone https://github.com/yourusername/ai-trading-monitor.git
+cd ai-trading-monitor
+chmod +x setup.sh
+./setup.sh
+```
+
+**On Windows:**
+```cmd
+git clone https://github.com/yourusername/ai-trading-monitor.git
+cd ai-trading-monitor
+setup.bat
+```
+
+#### Manual Setup
+
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/yourusername/ai-trading-monitor.git
 cd ai-trading-monitor
 ```
 
-2. Open [`index.html`](index.html) in your web browser:
+2. **Create virtual environment:**
 ```bash
-# On Windows
-start index.html
+# Linux/macOS
+python3 -m venv venv
+source venv/bin/activate
 
-# On macOS
-open index.html
-
-# On Linux
-xdg-open index.html
+# Windows
+python -m venv venv
+venv\Scripts\activate
 ```
 
-That's it! The application runs entirely client-side.
+3. **Install dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configure credentials:**
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env with your Robinhood credentials
+# Use your favorite text editor (nano, vim, notepad, etc.)
+nano .env
+```
+
+5. **Configure your `.env` file:**
+```env
+# Required: Your Robinhood credentials
+ROBINHOOD_USERNAME=your_email@example.com
+ROBINHOOD_PASSWORD=your_secure_password
+
+# Optional: For 2FA/MFA (choose one method)
+# Method 1: TOTP Secret (from authenticator app)
+ROBINHOOD_TOTP_SECRET=your_totp_secret_here
+
+# Method 2: SMS Code (enter when prompted)
+ROBINHOOD_MFA_CODE=
+
+# CRITICAL: Start with paper trading enabled!
+ENABLE_PAPER_TRADING=True
+
+# Safety limits
+MAX_DAILY_TRADES=50
+MAX_POSITION_SIZE_PERCENT=15.0
+MAX_DAILY_LOSS_PERCENT=5.0
+MIN_ACCOUNT_BALANCE=1000.0
+```
+
+### ⚠️ CRITICAL SECURITY WARNINGS
+
+1. **NEVER commit your `.env` file to version control!** It contains your credentials.
+2. **Start with `ENABLE_PAPER_TRADING=True`** to test without real money.
+3. **Use a strong, unique password** for your Robinhood account.
+4. **Enable 2FA/MFA** on your Robinhood account for security.
+5. **Review all safety limits** before enabling real trading.
 
 ## 📖 Usage Guide
 
-### Starting a Simulation
+### Starting the System
 
-1. **Configure Parameters**:
-   - **Initial Capital**: Set starting portfolio value ($1,000 - $1,000,000)
+1. **Start the API server:**
+
+**Linux/macOS:**
+```bash
+./start_server.sh
+```
+
+**Windows:**
+```cmd
+start_server.bat
+```
+
+**Or manually:**
+```bash
+# Activate virtual environment first
+source venv/bin/activate  # Linux/macOS
+# or
+venv\Scripts\activate  # Windows
+
+# Start server
+python api_server.py
+```
+
+The server will start on `http://localhost:5000`
+
+2. **Open the web interface:**
+   - Open [`index.html`](index.html) in your web browser
+   - Or navigate to the file directly
+
+### Using the Trading Bot
+
+1. **Authentication**:
+   - Click "Start Simulation" button
+   - The system will automatically authenticate with Robinhood using your `.env` credentials
+   - Wait for "✅ Connected to Robinhood" message
+
+2. **Configure Trading Parameters**:
+   - **Initial Capital**: Displays your actual Robinhood account balance
    - **DRL Algorithm**: Choose PPO, A2C, or SAC
    - **Risk Tolerance (λ)**: Adjust from 0 (conservative) to 1 (aggressive)
-   - **Trading Speed**: Control simulation speed (0.5s - 2s per step)
+   - **Trading Speed**: Control decision frequency (0.5s - 2s per step)
 
-2. **Start Trading**: Click the "Start Simulation" button
+3. **Start Trading**:
+   - Click "Start Simulation" to begin automated trading
+   - Monitor real-time updates of:
+     - Portfolio value and returns
+     - Current holdings and positions
+     - Trade execution log
+     - Technical indicators
+     - AI decision explanations
+     - Circuit breaker status
 
-3. **Monitor Performance**: Watch real-time updates of:
-   - Portfolio value and returns
-   - Holdings and positions
-   - Trade execution log
-   - Technical indicators
-   - AI decision explanations
+4. **Control Trading**:
+   - **Pause/Resume**: Temporarily halt trading decisions
+   - **Reset**: Stop trading and clear session data
+   - **🚨 Circuit Breaker**: Emergency stop (requires manual reset)
 
-4. **Control Simulation**:
-   - **Pause/Resume**: Temporarily halt trading
-   - **Reset**: Clear all data and start fresh
-   - **Circuit Breaker**: Emergency stop with human override
+5. **Monitor Safety Systems**:
+   - Watch circuit breaker status for safety violations
+   - Review daily trade count and P&L limits
+   - Check paper trading mode indicator
 
 ### Understanding the Dashboard
 
@@ -242,17 +348,37 @@ Edit [`script.js`](script.js:29) to modify the available stocks:
 this.availableStocks = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM'];
 ```
 
-### Adjusting Transaction Costs
-Modify the transaction cost rate in [`script.js`](script.js:267):
-```javascript
-const transactionCost = 0.002; // 0.2% default
+### Adjusting Safety Limits
+Modify safety parameters in [`.env`](.env):
+```env
+MAX_DAILY_TRADES=50              # Maximum trades per day
+MAX_POSITION_SIZE_PERCENT=15.0   # Max % of portfolio per position
+MAX_DAILY_LOSS_PERCENT=5.0       # Stop if daily loss exceeds this
+MIN_ACCOUNT_BALANCE=1000.0       # Minimum balance to maintain
 ```
 
 ### Customizing Algorithms
-Each algorithm's decision logic can be modified in:
-- [`ppoDecision()`](script.js:189) - PPO strategy
-- [`a2cDecision()`](script.js:226) - A2C strategy
-- [`sacDecision()`](script.js:256) - SAC strategy
+Each algorithm's decision logic can be modified in [`script.js`](script.js):
+- `ppoDecision()` - PPO strategy (conservative, risk-adjusted)
+- `a2cDecision()` - A2C strategy (balanced approach)
+- `sacDecision()` - SAC strategy (aggressive with exploration)
+
+### Switching to Real Trading
+
+⚠️ **EXTREME CAUTION REQUIRED** ⚠️
+
+Only switch to real trading after:
+1. ✅ Thoroughly testing in paper trading mode
+2. ✅ Understanding all algorithm behaviors
+3. ✅ Reviewing and accepting all risks
+4. ✅ Setting appropriate safety limits
+5. ✅ Starting with small amounts
+
+To enable real trading:
+```env
+# In .env file
+ENABLE_PAPER_TRADING=False  # ⚠️ USE WITH EXTREME CAUTION!
+```
 
 ## 📚 Academic Context
 
@@ -283,24 +409,62 @@ This project is based on research exploring:
 - **Architecture**: Client-side MVC pattern
 - **Data**: Simulated market data with realistic volatility
 
+## 🔧 API Endpoints
+
+The backend provides the following REST API endpoints:
+
+### Authentication
+- `POST /api/auth/login` - Authenticate with Robinhood
+- `POST /api/auth/logout` - Logout
+- `GET /api/auth/status` - Check authentication status
+
+### Account Management
+- `GET /api/account/summary` - Get account summary
+- `GET /api/account/portfolio` - Get portfolio value
+- `GET /api/account/positions` - Get current positions
+
+### Market Data
+- `GET /api/market/quote/<symbol>` - Get stock quote
+- `GET /api/market/price/<symbol>` - Get current price
+
+### Trading
+- `POST /api/trade/buy` - Execute BUY order
+- `POST /api/trade/sell` - Execute SELL order
+
+### Circuit Breaker
+- `GET /api/circuit-breaker/status` - Get circuit breaker status
+- `POST /api/circuit-breaker/emergency-stop` - Trigger emergency stop
+- `POST /api/circuit-breaker/reset` - Reset circuit breaker
+- `GET /api/circuit-breaker/trades` - Get recent trades
+
+### Health
+- `GET /api/health` - Health check
+
 ## 🤝 Contributing
 
 Contributions are welcome! Areas for improvement:
 
 1. **Additional Algorithms**: Implement DQN, DDPG, or TD3
-2. **Real Data Integration**: Connect to Yahoo Finance or Alpha Vantage APIs
-3. **Advanced Indicators**: Add Ichimoku Cloud, Fibonacci retracements
-4. **Backtesting**: Historical performance analysis
-5. **Multi-Asset**: Expand beyond stocks (crypto, forex, commodities)
-6. **Risk Models**: VaR, CVaR, stress testing
+2. **Advanced Indicators**: Add Ichimoku Cloud, Fibonacci retracements
+3. **Backtesting**: Historical performance analysis with real data
+4. **Multi-Asset**: Expand beyond stocks (crypto, forex, commodities)
+5. **Risk Models**: VaR, CVaR, stress testing
+6. **Machine Learning**: Integrate actual trained models
+7. **Real-time Data**: WebSocket support for live market data
 
 ### Development Setup
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/ai-trading-monitor.git
+cd ai-trading-monitor
 
-# No build process required - edit files directly
-# Open index.html in browser to test changes
+# Setup environment
+./setup.sh  # or setup.bat on Windows
+
+# Start development server
+python api_server.py
+
+# Edit files and refresh browser to see changes
 ```
 
 ## 📄 License
@@ -320,16 +484,55 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Discussions**: Join GitHub Discussions for questions
 - **Email**: support@example.com
 
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**"Backend server not running"**
+- Ensure `api_server.py` is running: `python api_server.py`
+- Check that port 5000 is not in use
+- Verify virtual environment is activated
+
+**"Authentication failed"**
+- Double-check credentials in `.env` file
+- Ensure 2FA/MFA is properly configured
+- Try generating a new TOTP code
+- Check Robinhood account status
+
+**"Circuit breaker tripped"**
+- Review circuit breaker status in UI
+- Check if daily limits were exceeded
+- Reset circuit breaker if safe to continue
+- Review trade history for issues
+
+**"Trade blocked"**
+- Verify sufficient buying power
+- Check position size limits
+- Ensure not exceeding daily trade limit
+- Confirm paper trading mode if testing
+
+**"Module not found" errors**
+- Activate virtual environment: `source venv/bin/activate`
+- Reinstall dependencies: `pip install -r requirements.txt`
+
+### Logs
+
+Check logs for detailed error information:
+- **Console output**: Terminal where `api_server.py` is running
+- **Log file**: `trading_bot.log` in project directory
+
 ## 🔮 Future Roadmap
 
-- [ ] Real-time data integration (yfinance, Polygon.io)
+- [ ] ✅ **Robinhood API integration** (COMPLETED)
+- [ ] ✅ **Circuit breaker safety system** (COMPLETED)
+- [ ] Real-time data streaming via WebSocket
 - [ ] Advanced charting with TradingView integration
 - [ ] Multi-agent portfolio management
 - [ ] Sentiment analysis using LLMs (Llama 3, GPT-4)
 - [ ] Backtesting framework with historical data
 - [ ] Export reports (PDF, CSV)
-- [ ] Mobile-responsive design improvements
-- [ ] WebSocket support for live data streaming
+- [ ] Mobile app (React Native)
+- [ ] Support for other brokers (TD Ameritrade, E*TRADE)
 
 ---
 
