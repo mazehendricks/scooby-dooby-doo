@@ -3,12 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Project</title>
+    <title>AI Trading Monitor - DRL Portfolio Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome</h1>
-    <p>This is my project.</p>
+    <div class="container">
+        <header>
+            <h1>🤖 AI Trading Monitor</h1>
+            <p class="subtitle">Deep Reinforcement Learning Portfolio Simulator</p>
+        </header>
+
+        <div class="dashboard">
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <h2>Control Panel</h2>
+                <div class="controls">
+                    <div class="input-group">
+                        <label for="initialCapital">Initial Capital ($)</label>
+                        <input type="number" id="initialCapital" value="10000" min="1000" step="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="algorithm">DRL Algorithm</label>
+                        <select id="algorithm">
+                            <option value="PPO">PPO (Proximal Policy Optimization)</option>
+                            <option value="A2C">A2C (Advantage Actor-Critic)</option>
+                            <option value="SAC">SAC (Soft Actor-Critic)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="riskTolerance">Risk Tolerance (λ)</label>
+                        <input type="range" id="riskTolerance" min="0" max="1" step="0.1" value="0.5">
+                        <span id="riskValue">0.5</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="tradingSpeed">Trading Speed</label>
+                        <select id="tradingSpeed">
+                            <option value="1000">Normal (1s)</option>
+                            <option value="500">Fast (0.5s)</option>
+                            <option value="2000">Slow (2s)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button id="startBtn" class="btn btn-primary">Start Simulation</button>
+                    <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
+                    <button id="resetBtn" class="btn btn-danger">Reset</button>
+                    <button id="circuitBreaker" class="btn btn-warning">🚨 Circuit Breaker</button>
+                </div>
+            </section>
+
+            <!-- Portfolio Overview -->
+            <section class="portfolio-overview">
+                <h2>Portfolio Performance</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Current Value</div>
+                        <div class="metric-value" id="currentValue">$10,000.00</div>
+                        <div class="metric-change" id="valueChange">+0.00%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total Return</div>
+                        <div class="metric-value" id="totalReturn">$0.00</div>
+                        <div class="metric-change" id="returnPercent">0.00%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Sharpe Ratio</div>
+                        <div class="metric-value" id="sharpeRatio">0.00</div>
+                        <div class="metric-info">Risk-adjusted return</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Max Drawdown</div>
+                        <div class="metric-value" id="maxDrawdown">0.00%</div>
+                        <div class="metric-info">Largest peak-to-trough decline</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Win Rate</div>
+                        <div class="metric-value" id="winRate">0.00%</div>
+                        <div class="metric-info">Profitable trades</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total Trades</div>
+                        <div class="metric-value" id="totalTrades">0</div>
+                        <div class="metric-info">Executed orders</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Market Sentiment -->
+            <section class="sentiment-panel">
+                <h2>Market Intelligence</h2>
+                <div class="sentiment-grid">
+                    <div class="sentiment-card">
+                        <div class="sentiment-icon">📰</div>
+                        <div class="sentiment-label">News Sentiment</div>
+                        <div class="sentiment-value" id="newsSentiment">Neutral</div>
+                    </div>
+                    <div class="sentiment-card">
+                        <div class="sentiment-icon">📊</div>
+                        <div class="sentiment-label">VIX (Fear Index)</div>
+                        <div class="sentiment-value" id="vixValue">15.2</div>
+                    </div>
+                    <div class="sentiment-card">
+                        <div class="sentiment-icon">🎯</div>
+                        <div class="sentiment-label">AI Confidence</div>
+                        <div class="sentiment-value" id="aiConfidence">85%</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Holdings -->
+            <section class="holdings-section">
+                <h2>Current Holdings</h2>
+                <div class="holdings-table-container">
+                    <table class="holdings-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Shares</th>
+                                <th>Avg Price</th>
+                                <th>Current Price</th>
+                                <th>Value</th>
+                                <th>P&L</th>
+                                <th>Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody id="holdingsBody">
+                            <tr>
+                                <td colspan="7" class="no-data">No holdings yet. Start simulation to begin trading.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Trade History -->
+            <section class="trade-history">
+                <h2>Recent Trades</h2>
+                <div class="trade-log" id="tradeLog">
+                    <div class="no-trades">No trades executed yet.</div>
+                </div>
+            </section>
+
+            <!-- Technical Indicators -->
+            <section class="indicators-section">
+                <h2>Technical Indicators (State Representation)</h2>
+                <div class="indicators-grid">
+                    <div class="indicator-card">
+                        <h3>Trend</h3>
+                        <div class="indicator-item">
+                            <span>SMA (50)</span>
+                            <span id="sma50">--</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span>EMA (20)</span>
+                            <span id="ema20">--</span>
+                        </div>
+                    </div>
+                    <div class="indicator-card">
+                        <h3>Momentum</h3>
+                        <div class="indicator-item">
+                            <span>RSI</span>
+                            <span id="rsi">--</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span>MACD</span>
+                            <span id="macd">--</span>
+                        </div>
+                    </div>
+                    <div class="indicator-card">
+                        <h3>Volatility</h3>
+                        <div class="indicator-item">
+                            <span>Bollinger Bands</span>
+                            <span id="bollinger">--</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span>ATR</span>
+                            <span id="atr">--</span>
+                        </div>
+                    </div>
+                    <div class="indicator-card">
+                        <h3>Volume</h3>
+                        <div class="indicator-item">
+                            <span>OBV</span>
+                            <span id="obv">--</span>
+                        </div>
+                        <div class="indicator-item">
+                            <span>VWAP</span>
+                            <span id="vwap">--</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Decision Explanation (XAI) -->
+            <section class="explanation-section">
+                <h2>🧠 AI Decision Explanation (XAI)</h2>
+                <div class="explanation-box" id="aiExplanation">
+                    <p class="explanation-text">AI agent is idle. Start simulation to see decision-making process.</p>
+                </div>
+            </section>
+
+            <!-- Risk Warnings -->
+            <section class="warnings-section">
+                <h2>⚠️ Risk & Safety Monitoring</h2>
+                <div class="warnings-grid">
+                    <div class="warning-card" id="speedWarning">
+                        <div class="warning-icon">⚡</div>
+                        <div class="warning-text">
+                            <strong>Too Fast to Stop:</strong> Circuit breaker active. Human override available.
+                        </div>
+                    </div>
+                    <div class="warning-card" id="opacityWarning">
+                        <div class="warning-icon">🔍</div>
+                        <div class="warning-text">
+                            <strong>Too Opaque to Understand:</strong> XAI explanations enabled for transparency.
+                        </div>
+                    </div>
+                    <div class="warning-card" id="misinfoWarning">
+                        <div class="warning-icon">🛡️</div>
+                        <div class="warning-text">
+                            <strong>Misinformation Resilience:</strong> News sentiment filtered for deepfakes.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>⚠️ <strong>Disclaimer:</strong> This is a simulation for educational purposes only. Not financial advice. AI trading carries significant risks including "flash crashes," opacity, and misinformation vulnerabilities.</p>
+        </footer>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
