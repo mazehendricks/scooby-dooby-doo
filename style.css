@@ -335,13 +335,267 @@ section h2 {
 }
 
 @keyframes spooky-pulse {
-    0%, 100% { 
+    0%, 100% {
         opacity: 1;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     }
-    50% { 
+    50% {
         opacity: 0.85;
         box-shadow: 0 4px 20px rgba(147, 112, 219, 0.8);
+    }
+}
+
+/* Button Disclaimers */
+.button-disclaimers {
+    margin-top: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(0, 206, 209, 0.1), rgba(255, 140, 0, 0.1));
+    border-radius: 10px;
+    border: 2px solid var(--mystery-teal);
+}
+
+.disclaimer-text {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+}
+
+.disclaimer-text strong {
+    color: var(--groovy-yellow);
+    font-size: 1.05rem;
+}
+
+/* Button Tooltips Enhancement */
+.btn[title] {
+    position: relative;
+    cursor: help;
+}
+
+.btn[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--dark-bg), var(--card-bg));
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--mystery-teal);
+    white-space: normal;
+    width: 280px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    animation: tooltipFadeIn 0.3s ease;
+    pointer-events: none;
+    line-height: 1.4;
+}
+
+.btn[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--mystery-teal);
+    z-index: 1001;
+    animation: tooltipFadeIn 0.3s ease;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Live Trading Status Indicators */
+.blink {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--positive);
+    border-radius: 50%;
+    animation: blink-green 1.5s infinite;
+    box-shadow: 0 0 10px var(--positive);
+}
+
+.blink-yellow {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--groovy-yellow);
+    border-radius: 50%;
+    animation: blink-yellow 1.5s infinite;
+    box-shadow: 0 0 10px var(--groovy-yellow);
+}
+
+.blink-red {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--danger-color);
+    border-radius: 50%;
+    animation: blink-red 1.5s infinite;
+    box-shadow: 0 0 10px var(--danger-color);
+}
+
+@keyframes blink-green {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes blink-yellow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes blink-red {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Live Trading Animation - Active State */
+.trading-active {
+    position: relative;
+    overflow: visible;
+}
+
+.trading-active::after {
+    content: '📊';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.5rem;
+    animation: pulse-icon 2s infinite;
+    filter: drop-shadow(0 0 10px rgba(0, 206, 209, 0.8));
+}
+
+@keyframes pulse-icon {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+/* Trading Activity Indicator */
+.trading-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--mystery-teal), var(--mystery-blue));
+    padding: 15px 25px;
+    border-radius: 50px;
+    border: 3px solid var(--groovy-orange);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    animation: slideInRight 0.5s ease;
+}
+
+.trading-indicator.active {
+    display: flex;
+}
+
+.trading-indicator .status-dot {
+    width: 15px;
+    height: 15px;
+    background: var(--positive);
+    border-radius: 50%;
+    animation: blink-green 1.5s infinite;
+    box-shadow: 0 0 15px var(--positive);
+}
+
+.trading-indicator .status-text {
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Trade Flash Animation */
+.trade-flash {
+    animation: tradeFlash 0.5s ease;
+}
+
+@keyframes tradeFlash {
+    0% {
+        background: rgba(0, 206, 209, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        background: rgba(0, 206, 209, 0.8);
+        transform: scale(1.05);
+    }
+    100% {
+        background: transparent;
+        transform: scale(1);
+    }
+}
+
+/* Mystery Machine Driving Animation */
+.mystery-machine-driving {
+    position: fixed;
+    bottom: 20px;
+    left: -100px;
+    font-size: 3rem;
+    z-index: 9999;
+    animation: driveMysteryMachine 15s linear infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes driveMysteryMachine {
+    0% {
+        left: -100px;
+    }
+    100% {
+        left: calc(100% + 100px);
+    }
+}
+
+/* Scooby Snack Trail */
+.scooby-snack {
+    position: fixed;
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 9998;
+    animation: snackFall 3s ease-in forwards;
+}
+
+@keyframes snackFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
     }
 }
 

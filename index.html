@@ -46,10 +46,34 @@
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button id="startBtn" class="btn btn-primary">🚐 Start the Mystery Machine!</button>
-                    <button id="pauseBtn" class="btn btn-secondary" disabled>⏸️ Zoinks! Pause!</button>
-                    <button id="resetBtn" class="btn btn-danger">🔄 Reset Investigation</button>
-                    <button id="circuitBreaker" class="btn btn-warning">👻 Ghost Detector!</button>
+                    <button id="startBtn" class="btn btn-primary"
+                            title="🚐 Start the Mystery Machine and begin simulated trading. The gang will investigate market mysteries based on your settings!"
+                            data-disclaimer="Starts automated trading simulation">
+                        🚐 Start the Mystery Machine!
+                    </button>
+                    <button id="pauseBtn" class="btn btn-secondary" disabled
+                            title="⏸️ Pause the investigation! Take a Scooby Snack break and resume anytime."
+                            data-disclaimer="Temporarily pauses trading">
+                        ⏸️ Zoinks! Pause!
+                    </button>
+                    <button id="resetBtn" class="btn btn-danger"
+                            title="🔄 Reset everything and start a fresh investigation. All progress will be cleared!"
+                            data-disclaimer="Resets all data and stops trading">
+                        🔄 Reset Investigation
+                    </button>
+                    <button id="circuitBreaker" class="btn btn-warning"
+                            title="👻 Emergency stop! Activates when spooky market conditions detected. Immediately halts all trading!"
+                            data-disclaimer="Emergency circuit breaker - stops all activity">
+                        👻 Ghost Detector!
+                    </button>
+                </div>
+                <div class="button-disclaimers">
+                    <p class="disclaimer-text">
+                        <strong>🔍 Button Guide:</strong> Hover over any button to see what it does!
+                        <span class="blink">●</span> Green = Active Trading |
+                        <span class="blink-yellow">●</span> Yellow = Paused |
+                        <span class="blink-red">●</span> Red = Stopped
+                    </p>
                 </div>
             </section>
 
