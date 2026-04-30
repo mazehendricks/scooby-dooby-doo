@@ -3,109 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Trading Monitor - DRL Portfolio Simulator</title>
+    <title>🐕 The Scooby Trader - Mystery Machine Portfolio Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🤖 AI Trading Monitor</h1>
-            <p class="subtitle">Deep Reinforcement Learning Portfolio Simulator</p>
+            <h1>🐕 The Scooby Trader</h1>
+            <p class="subtitle">Solving Market Mysteries with the Mystery Machine!</p>
+            <p class="tagline">🚐 "Ruh-roh! Let's investigate those stocks!" 🔍</p>
         </header>
 
         <div class="dashboard">
             <!-- Control Panel -->
             <section class="control-panel">
-                <h2>Control Panel</h2>
+                <h2>🔧 Mystery Machine Control Panel</h2>
                 <div class="controls">
                     <div class="input-group">
-                        <label for="initialCapital">Initial Capital ($)</label>
+                        <label for="initialCapital">💰 Scooby Snacks Budget ($)</label>
                         <input type="number" id="initialCapital" value="10000" min="1000" step="1000">
                     </div>
                     <div class="input-group">
-                        <label for="algorithm">DRL Algorithm</label>
+                        <label for="algorithm">🧠 Mystery Solving Algorithm</label>
                         <select id="algorithm">
-                            <option value="PPO">PPO (Proximal Policy Optimization)</option>
-                            <option value="A2C">A2C (Advantage Actor-Critic)</option>
-                            <option value="SAC">SAC (Soft Actor-Critic)</option>
+                            <option value="PPO">Fred's Plan (PPO)</option>
+                            <option value="A2C">Velma's Analysis (A2C)</option>
+                            <option value="SAC">Shaggy's Strategy (SAC)</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="riskTolerance">Risk Tolerance (λ)</label>
+                        <label for="riskTolerance">😱 Scaredy-Cat Level (λ)</label>
                         <input type="range" id="riskTolerance" min="0" max="1" step="0.1" value="0.5">
                         <span id="riskValue">0.5</span>
                     </div>
                     <div class="input-group">
-                        <label for="tradingSpeed">Trading Speed</label>
+                        <label for="tradingSpeed">🏃 Chase Speed</label>
                         <select id="tradingSpeed">
-                            <option value="1000">Normal (1s)</option>
-                            <option value="500">Fast (0.5s)</option>
-                            <option value="2000">Slow (2s)</option>
+                            <option value="1000">Normal Chase (1s)</option>
+                            <option value="500">Scooby Sprint (0.5s)</option>
+                            <option value="2000">Sneaky Creep (2s)</option>
                         </select>
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button id="startBtn" class="btn btn-primary">Start Simulation</button>
-                    <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
-                    <button id="resetBtn" class="btn btn-danger">Reset</button>
-                    <button id="circuitBreaker" class="btn btn-warning">🚨 Circuit Breaker</button>
+                    <button id="startBtn" class="btn btn-primary">🚐 Start the Mystery Machine!</button>
+                    <button id="pauseBtn" class="btn btn-secondary" disabled>⏸️ Zoinks! Pause!</button>
+                    <button id="resetBtn" class="btn btn-danger">🔄 Reset Investigation</button>
+                    <button id="circuitBreaker" class="btn btn-warning">👻 Ghost Detector!</button>
                 </div>
             </section>
 
             <!-- Portfolio Overview -->
             <section class="portfolio-overview">
-                <h2>Portfolio Performance</h2>
+                <h2>📊 Mystery Gang Portfolio Performance</h2>
                 <div class="metrics-grid">
                     <div class="metric-card">
-                        <div class="metric-label">Current Value</div>
+                        <div class="metric-label">🍖 Current Snack Value</div>
                         <div class="metric-value" id="currentValue">$10,000.00</div>
                         <div class="metric-change" id="valueChange">+0.00%</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Total Return</div>
+                        <div class="metric-label">🎁 Total Treasure Found</div>
                         <div class="metric-value" id="totalReturn">$0.00</div>
                         <div class="metric-change" id="returnPercent">0.00%</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Sharpe Ratio</div>
+                        <div class="metric-label">🔍 Clue Quality Score</div>
                         <div class="metric-value" id="sharpeRatio">0.00</div>
-                        <div class="metric-info">Risk-adjusted return</div>
+                        <div class="metric-info">Mystery-adjusted return</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Max Drawdown</div>
+                        <div class="metric-label">😱 Biggest Scare</div>
                         <div class="metric-value" id="maxDrawdown">0.00%</div>
-                        <div class="metric-info">Largest peak-to-trough decline</div>
+                        <div class="metric-info">Largest spooky decline</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Win Rate</div>
+                        <div class="metric-label">🏆 Mystery Solve Rate</div>
                         <div class="metric-value" id="winRate">0.00%</div>
-                        <div class="metric-info">Profitable trades</div>
+                        <div class="metric-info">Successful investigations</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Total Trades</div>
+                        <div class="metric-label">🔎 Total Mysteries</div>
                         <div class="metric-value" id="totalTrades">0</div>
-                        <div class="metric-info">Executed orders</div>
+                        <div class="metric-info">Cases investigated</div>
                     </div>
                 </div>
             </section>
 
             <!-- Market Sentiment -->
             <section class="sentiment-panel">
-                <h2>Market Intelligence</h2>
+                <h2>🕵️ Mystery Market Intelligence</h2>
                 <div class="sentiment-grid">
                     <div class="sentiment-card">
                         <div class="sentiment-icon">📰</div>
-                        <div class="sentiment-label">News Sentiment</div>
+                        <div class="sentiment-label">Newspaper Clues</div>
                         <div class="sentiment-value" id="newsSentiment">Neutral</div>
                     </div>
                     <div class="sentiment-card">
-                        <div class="sentiment-icon">📊</div>
-                        <div class="sentiment-label">VIX (Fear Index)</div>
+                        <div class="sentiment-icon">👻</div>
+                        <div class="sentiment-label">Spook-O-Meter (VIX)</div>
                         <div class="sentiment-value" id="vixValue">15.2</div>
                     </div>
                     <div class="sentiment-card">
-                        <div class="sentiment-icon">🎯</div>
-                        <div class="sentiment-label">AI Confidence</div>
+                        <div class="sentiment-icon">🧠</div>
+                        <div class="sentiment-label">Velma's Confidence</div>
                         <div class="sentiment-value" id="aiConfidence">85%</div>
                     </div>
                 </div>
@@ -113,7 +114,7 @@
 
             <!-- Holdings -->
             <section class="holdings-section">
-                <h2>Current Holdings</h2>
+                <h2>🎒 Mystery Gang's Current Clues</h2>
                 <div class="holdings-table-container">
                     <table class="holdings-table">
                         <thead>
@@ -129,7 +130,7 @@
                         </thead>
                         <tbody id="holdingsBody">
                             <tr>
-                                <td colspan="7" class="no-data">No holdings yet. Start simulation to begin trading.</td>
+                                <td colspan="7" class="no-data">Zoinks! No clues collected yet. Start the Mystery Machine to begin investigating!</td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,18 +139,18 @@
 
             <!-- Trade History -->
             <section class="trade-history">
-                <h2>Recent Trades</h2>
+                <h2>📖 Mystery Solving Log</h2>
                 <div class="trade-log" id="tradeLog">
-                    <div class="no-trades">No trades executed yet.</div>
+                    <div class="no-trades">Jinkies! No mysteries solved yet. Let's get investigating!</div>
                 </div>
             </section>
 
             <!-- Technical Indicators -->
             <section class="indicators-section">
-                <h2>Technical Indicators (State Representation)</h2>
+                <h2>🔬 Velma's Technical Analysis Lab</h2>
                 <div class="indicators-grid">
                     <div class="indicator-card">
-                        <h3>Trend</h3>
+                        <h3>📈 Trend Tracker</h3>
                         <div class="indicator-item">
                             <span>SMA (50)</span>
                             <span id="sma50">--</span>
@@ -160,7 +161,7 @@
                         </div>
                     </div>
                     <div class="indicator-card">
-                        <h3>Momentum</h3>
+                        <h3>⚡ Momentum Meter</h3>
                         <div class="indicator-item">
                             <span>RSI</span>
                             <span id="rsi">--</span>
@@ -171,7 +172,7 @@
                         </div>
                     </div>
                     <div class="indicator-card">
-                        <h3>Volatility</h3>
+                        <h3>🎢 Spookiness Level</h3>
                         <div class="indicator-item">
                             <span>Bollinger Bands</span>
                             <span id="bollinger">--</span>
@@ -182,7 +183,7 @@
                         </div>
                     </div>
                     <div class="indicator-card">
-                        <h3>Volume</h3>
+                        <h3>📢 Activity Detector</h3>
                         <div class="indicator-item">
                             <span>OBV</span>
                             <span id="obv">--</span>
@@ -197,32 +198,32 @@
 
             <!-- AI Decision Explanation (XAI) -->
             <section class="explanation-section">
-                <h2>🧠 AI Decision Explanation (XAI)</h2>
+                <h2>🧠 Velma's Mystery Analysis</h2>
                 <div class="explanation-box" id="aiExplanation">
-                    <p class="explanation-text">AI agent is idle. Start simulation to see decision-making process.</p>
+                    <p class="explanation-text">👓 "Jinkies! The Mystery Machine is idle. Start the investigation to see my analysis!"</p>
                 </div>
             </section>
 
             <!-- Risk Warnings -->
             <section class="warnings-section">
-                <h2>⚠️ Risk & Safety Monitoring</h2>
+                <h2>⚠️ Spooky Warnings & Safety</h2>
                 <div class="warnings-grid">
                     <div class="warning-card" id="speedWarning">
-                        <div class="warning-icon">⚡</div>
+                        <div class="warning-icon">💨</div>
                         <div class="warning-text">
-                            <strong>Too Fast to Stop:</strong> Circuit breaker active. Human override available.
+                            <strong>Zoinks! Too Fast!</strong> The Mystery Machine has a brake system. Fred can take control anytime!
                         </div>
                     </div>
                     <div class="warning-card" id="opacityWarning">
                         <div class="warning-icon">🔍</div>
                         <div class="warning-text">
-                            <strong>Too Opaque to Understand:</strong> XAI explanations enabled for transparency.
+                            <strong>Jinkies! Need More Clues!</strong> Velma's analysis provides transparency on all decisions.
                         </div>
                     </div>
                     <div class="warning-card" id="misinfoWarning">
-                        <div class="warning-icon">🛡️</div>
+                        <div class="warning-icon">🎭</div>
                         <div class="warning-text">
-                            <strong>Misinformation Resilience:</strong> News sentiment filtered for deepfakes.
+                            <strong>Ruh-roh! Fake Ghosts!</strong> Scooby's nose detects fake news and market manipulation.
                         </div>
                     </div>
                 </div>
@@ -230,7 +231,8 @@
         </div>
 
         <footer>
-            <p>⚠️ <strong>Disclaimer:</strong> This is a simulation for educational purposes only. Not financial advice. AI trading carries significant risks including "flash crashes," opacity, and misinformation vulnerabilities.</p>
+            <p>⚠️ <strong>Mystery Gang Disclaimer:</strong> This is a simulation for educational purposes only - not financial advice! Like, even Scooby knows that trading carries risks including "flash crashes," spooky volatility, and fake ghost sightings. Would you do it for a Scooby Snack? 🍖</p>
+            <p class="gang-signature">👨‍🦰 Fred • 👓 Velma • 👱‍♀️ Daphne • 👕 Shaggy • 🐕 Scooby-Doo</p>
         </footer>
     </div>
 
